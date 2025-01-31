@@ -16,23 +16,31 @@ import {
 } from "~/lib/constants";
 
 function YoButton() {
-  const { write, isLoading, isSuccess, isError } = useContractWrite({
-    address: YO_CONTRACT_ADDRESS,
-    abi: YO_CONTRACT_ABI,
-    functionName: 'yo',
-    args: [RECIPIENT_ADDRESS, '0x']
-  });
+  const { writeContract, isPending, isSuccess, isError } = useContractWrite();
+
+  const handleYo = async () => {
+    try {
+      await writeContract({
+        address: YO_CONTRACT_ADDRESS,
+        abi: YO_CONTRACT_ABI,
+        functionName: 'yo',
+        args: [RECIPIENT_ADDRESS, '0x' as `0x${string}`]
+      });
+    } catch (error) {
+      console.error('Error sending YO:', error);
+    }
+  };
 
   return (
     <Card className="border-neutral-200 bg-white">
       <CardContent className="p-4">
         <PurpleButton 
           className="w-full h-16 text-xl font-bold"
-          onClick={() => write?.()}
-          isLoading={isLoading}
+          onClick={handleYo}
+          isLoading={isPending}
           disabled={isLoading || isSuccess}
         >
-          {isLoading ? 'Sending YO...' : 
+          {isPending ? 'Sending YO...' : 
            isSuccess ? 'YO Sent!' :
            isError ? 'Error Sending YO' : 
            'Send YO!'}
