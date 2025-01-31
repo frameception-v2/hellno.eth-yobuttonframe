@@ -40,7 +40,7 @@ function YoButton() {
           className="w-full h-16 text-xl font-bold"
           onClick={handleYo}
           isLoading={isPending}
-          disabled={isLoading || isSuccess}
+          disabled={isPending || isSuccess}
         >
           {isPending ? 'Sending YO...' : 
            isSuccess ? 'YO Sent!' :
