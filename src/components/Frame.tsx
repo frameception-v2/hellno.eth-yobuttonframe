@@ -3,33 +3,40 @@
 import { useEffect, useCallback, useState } from "react";
 import sdk, {
   AddFrame,
-  SignIn as SignInCore,
   type Context,
 } from "@farcaster/frame-sdk";
-import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "~/components/ui/card";
-
-import { config } from "~/components/providers/WagmiProvider";
+import { useContractWrite, useWalletClient } from "wagmi";
+import { Card, CardContent } from "~/components/ui/card";
 import { PurpleButton } from "~/components/ui/PurpleButton";
-import { truncateAddress } from "~/lib/truncateAddress";
-import { base, optimism } from "wagmi/chains";
-import { useSession } from "next-auth/react";
-import { createStore } from "mipd";
-import { Label } from "~/components/ui/label";
-import { PROJECT_TITLE } from "~/lib/constants";
+import { 
+  PROJECT_TITLE, 
+  YO_CONTRACT_ADDRESS, 
+  YO_CONTRACT_ABI,
+  RECIPIENT_ADDRESS 
+} from "~/lib/constants";
 
-function ExampleCard() {
+function YoButton() {
+  const { write, isLoading, isSuccess, isError } = useContractWrite({
+    address: YO_CONTRACT_ADDRESS,
+    abi: YO_CONTRACT_ABI,
+    functionName: 'yo',
+    args: [RECIPIENT_ADDRESS, '0x']
+  });
+
   return (
     <Card className="border-neutral-200 bg-white">
-      <CardHeader>
-        <CardTitle className="text-neutral-900">Welcome to the Frame Template</CardTitle>
-        <CardDescription className="text-neutral-600">
-          This is an example card that you can customize or remove
-        </CardDescription>
-      </CardHeader>
-      <CardContent className="text-neutral-800">
-        <p>
-          Your frame content goes here. The text is intentionally dark to ensure good readability.
-        </p>
+      <CardContent className="p-4">
+        <PurpleButton 
+          className="w-full h-16 text-xl font-bold"
+          onClick={() => write?.()}
+          isLoading={isLoading}
+          disabled={isLoading || isSuccess}
+        >
+          {isLoading ? 'Sending YO...' : 
+           isSuccess ? 'YO Sent!' :
+           isError ? 'Error Sending YO' : 
+           'Send YO!'}
+        </PurpleButton>
       </CardContent>
     </Card>
   );
@@ -137,7 +144,7 @@ export default function Frame(
     >
       <div className="w-[300px] mx-auto py-2 px-2">
         <h1 className="text-2xl font-bold text-center mb-4 text-neutral-900">{title}</h1>
-        <ExampleCard />
+        <YoButton />
       </div>
     </div>
   );
