@@ -119,15 +119,6 @@ export default function Frame(
 
       console.log("Calling ready");
       sdk.actions.ready({});
-
-      // Set up a MIPD Store, and request Providers.
-      const store = createStore();
-
-      // Subscribe to the MIPD Store.
-      store.subscribe((providerDetails) => {
-        console.log("PROVIDER DETAILS", providerDetails);
-        // => [EIP6963ProviderDetail, EIP6963ProviderDetail, ...]
-      });
     };
     if (sdk && !isSDKLoaded) {
       console.log("Calling load");
