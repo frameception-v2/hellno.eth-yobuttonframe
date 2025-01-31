@@ -5,17 +5,19 @@ import sdk, {
   AddFrame,
   type Context,
 } from "@farcaster/frame-sdk";
-import { useContractWrite, useWalletClient } from "wagmi";
+import { useAccount, useContractWrite, useWalletClient } from "wagmi";
 import { Card, CardContent } from "~/components/ui/card";
 import { PurpleButton } from "~/components/ui/PurpleButton";
 import { 
   PROJECT_TITLE, 
   YO_CONTRACT_ADDRESS, 
   YO_CONTRACT_ABI,
-  RECIPIENT_ADDRESS 
+  RECIPIENT_ADDRESS,
+  RECIPIENT_ENS
 } from "~/lib/constants";
 
 function YoButton() {
+  const { address } = useAccount();
   const { writeContract, isPending, isSuccess, isError } = useContractWrite();
 
   const handleYo = async () => {
@@ -152,7 +154,17 @@ export default function Frame(
     >
       <div className="w-[300px] mx-auto py-2 px-2">
         <h1 className="text-2xl font-bold text-center mb-4 text-neutral-900">{title}</h1>
-        <YoButton />
+        <div className="space-y-4">
+          <p className="text-sm text-center text-neutral-600">
+            Send YO to {RECIPIENT_ENS}
+          </p>
+          <YoButton />
+          {address && (
+            <p className="text-xs text-center text-neutral-500">
+              Sending from: {address}
+            </p>
+          )}
+        </div>
       </div>
     </div>
   );

@@ -26,4 +26,5 @@ export const YO_CONTRACT_ABI = [
 ] as const;
 
 // Your address to receive YO tokens
-export const RECIPIENT_ADDRESS = "YOUR_ADDRESS_HERE"; // Replace with your address
+export const RECIPIENT_ADDRESS = "0x6d9fFaede2c6CD9bb48becE230ad589e0E0D981c"; // hellno.eth
+export const RECIPIENT_ENS = "hellno.eth";
