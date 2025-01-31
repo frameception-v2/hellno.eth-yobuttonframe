@@ -55,6 +55,7 @@ function YoButton() {
 export default function Frame(
   { title }: { title?: string } = { title: PROJECT_TITLE }
 ) {
+  const { address } = useAccount();
   const [isSDKLoaded, setIsSDKLoaded] = useState(false);
   const [context, setContext] = useState<Context.FrameContext>();
 
